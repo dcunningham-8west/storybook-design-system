@@ -41,3 +41,13 @@ export const Diarm: Story = {
     isHighlighted: false,
   },
 };
+
+// 4. Diarm's State
+export const Bill: Story = {
+  args: {
+    title: 'Bill Card',
+    description: 'This is a bill card loaded from a local tsx file.',
+    tag: 'Billstown',
+    isHighlighted: true,
+  },
+};
