@@ -31,3 +31,13 @@ export const Highlighted: Story = {
     isHighlighted: true,
   },
 };
+
+// 3. Diarm's State
+export const Diarm: Story = {
+  args: {
+    title: 'Diarm Card',
+    description: 'This is a diarm card loaded from a local tsx file.',
+    tag: 'Diarmiesta',
+    isHighlighted: false,
+  },
+};
