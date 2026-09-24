@@ -18,7 +18,7 @@ export const Card: React.FC<CardProps> = ({
     <div
       style={{
         border: isHighlighted ? '2px solid #0055ff' : '1px solid #e2e8f0',
-        backgroundColor: isHighlighted ? '#f0f7ff' : '#ffffff',
+        backgroundColor: isHighlighted ? '#e6f4ea' : '#ffffff',
         borderRadius: '8px',
         padding: '16px',
         maxWidth: '320px',
