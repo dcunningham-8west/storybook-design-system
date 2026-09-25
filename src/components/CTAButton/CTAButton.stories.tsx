@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CTAButton } from './CTAButton';
 
 const meta = {
-  title: 'Compontents/Button',
+  title: 'Compontents/CTAButton',
   component: CTAButton,
   tags: ['autodocs'],
 } satisfies Meta<typeof CTAButton>;
