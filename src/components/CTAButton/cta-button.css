@@ -2,6 +2,7 @@ button {
   background-color: #1d8928;
   color: #fff;
   font-size: 16px;
+  border: none;
 }
 button.ctabutton-small {
   border-radius: 6px;
@@ -15,7 +16,7 @@ button.ctabutton-large {
   padding: 16px 32px;
 }
 button.background-secondary {
-  border-width: solid #2db035 1.5px;
+  border: solid #2db035 1.5px;
   border-radius: 10px;
   background-color: #fff;
   color: #2db035;
