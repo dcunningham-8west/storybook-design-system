@@ -1,0 +1,12 @@
+button.ctabutton-small {
+  padding: 8px 16px;
+}
+button.ctabutton-medium {
+  padding: 12px 24px;
+}
+button.ctabutton-large {
+  padding: 16px 32px;
+}
+button.background-secondary {
+  background-color: green;
+} /*# sourceMappingURL=cta-button.css.map */
