@@ -5,6 +5,9 @@ const meta = {
   title: 'Compontents/CTAButton',
   component: CTAButton,
   tags: ['autodocs'],
+  argTypes: {
+    size: { control: 'select' },
+  },
 } satisfies Meta<typeof CTAButton>;
 
 export default meta;

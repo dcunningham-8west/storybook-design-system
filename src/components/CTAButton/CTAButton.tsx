@@ -6,11 +6,11 @@ export interface CTAButtonProps {
   isSecondary: boolean;
 }
 
-export const CTAButton: React.FC<CTAButtonProps> = ({
+export const CTAButton = ({
   label,
   size,
   isSecondary = false,
-}) => {
+}: CTAButtonProps) => {
   return (
     <button
       type="button"
