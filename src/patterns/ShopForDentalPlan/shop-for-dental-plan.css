@@ -1,0 +1,19 @@
+.shop-dental-plan {
+  min-height: 100vh;
+  padding: 48px 24px;
+  background-color: #f4f2eb;
+  background-image: repeating-linear-gradient(
+    135deg,
+    rgba(29, 137, 40, 0.035) 0,
+    rgba(29, 137, 40, 0.035) 1px,
+    transparent 1px,
+    transparent 18px
+  );
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .shop-dental-plan {
+    padding: 16px;
+  }
+}

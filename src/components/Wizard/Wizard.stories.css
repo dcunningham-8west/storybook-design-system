@@ -1,0 +1,52 @@
+.product-wizard-story {
+  min-height: 100vh;
+  padding: 48px 24px;
+  background: linear-gradient(135deg, #edf4ee 0%, #f9f5e9 100%);
+  box-sizing: border-box;
+}
+
+.product-wizard-story__fields {
+  display: grid;
+  gap: 20px;
+}
+
+.product-wizard-story__review {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 12px 20px;
+  margin: 0;
+}
+
+.product-wizard-story__review dt {
+  color: #5d6961;
+  font-weight: 700;
+}
+
+.product-wizard-story__review dd {
+  margin: 0;
+}
+
+.product-wizard-story__success {
+  width: min(100%, 620px);
+  margin: 80px auto;
+  padding: 48px;
+  border-left: 5px solid #1d8928;
+  background: #fff;
+  box-shadow: 0 18px 48px rgba(23, 33, 27, 0.1);
+  font-family: 'Nunito Sans', 'Helvetica Neue', sans-serif;
+}
+
+@media (max-width: 600px) {
+  .product-wizard-story {
+    padding: 16px;
+  }
+
+  .product-wizard-story__review {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .product-wizard-story__review dd {
+    margin-bottom: 12px;
+  }
+}

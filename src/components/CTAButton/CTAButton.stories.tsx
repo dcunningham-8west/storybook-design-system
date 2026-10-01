@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CTAButton } from './CTAButton';
 
 const meta = {
-  title: 'Compontents/CTAButton',
+  title: 'Components/CTAButton',
   component: CTAButton,
   tags: ['autodocs'],
   argTypes: {
@@ -21,7 +21,7 @@ export const Primary: Story = {
   },
 };
 
-export const PrimarytMedium: Story = {
+export const PrimaryMedium: Story = {
   args: {
     label: 'Learn More',
     size: 'medium',

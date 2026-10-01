@@ -1,8 +1,9 @@
-button {
+.ctabutton {
   background-color: #1d8928;
   color: #fff;
   font-size: 16px;
   border: none;
+  cursor: pointer;
 }
 button.ctabutton-small {
   border-radius: 6px;
@@ -21,4 +22,12 @@ button.background-secondary {
   border-radius: 10px;
   background-color: #fff;
   color: #2db035;
-}/*# sourceMappingURL=cta-button.css.map */
+}
+.ctabutton:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+.ctabutton:focus-visible {
+  outline: 3px solid #f3bd3d;
+  outline-offset: 3px;
+} /*# sourceMappingURL=cta-button.css.map */
