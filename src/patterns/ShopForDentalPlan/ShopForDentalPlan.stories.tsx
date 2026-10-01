@@ -5,6 +5,7 @@ import {
   type ChoiceTileOption,
 } from '../../components/ChoiceTileGroup/ChoiceTileGroup';
 import { TextField } from '../../components/TextField/TextField';
+import type { ValidationRuleName } from '../../components/TextField/validation';
 import { Wizard, type WizardStep } from '../../components/Wizard/Wizard';
 import './shop-for-dental-plan.css';
 
@@ -16,6 +17,7 @@ interface ChoicePanel extends WizardStep {
 interface PanelField {
   id: string;
   label: string;
+  validate?: ValidationRuleName;
 }
 
 interface FieldPanel extends WizardStep {
@@ -53,7 +55,11 @@ const panels: Panel[] = [
       { id: 'streetAddress', label: 'Street Address' },
       { id: 'firstName', label: 'First Name' },
       { id: 'lastName', label: 'Last Name' },
-      { id: 'birthday', label: 'Birthday (mm/dd/yyyy)' },
+      {
+        id: 'birthday',
+        label: 'Birthday (mm/dd/yyyy)',
+        validate: 'birthday',
+      },
     ],
   },
 ];
@@ -61,6 +67,7 @@ const panels: Panel[] = [
 const ShopForDentalPlan = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [validity, setValidity] = useState<Record<string, boolean>>({});
   const panel = panels[currentStep];
 
   const setAnswer = (id: string, value: string) => {
@@ -70,7 +77,10 @@ const ShopForDentalPlan = () => {
   const canContinue =
     panel.kind === 'choice'
       ? Boolean(answers[panel.id])
-      : panel.fields.every((field) => Boolean(answers[field.id]?.trim()));
+      : panel.fields.every(
+          (field) =>
+            Boolean(answers[field.id]?.trim()) && validity[field.id] !== false,
+        );
 
   return (
     <main className="shop-dental-plan">
@@ -101,7 +111,15 @@ const ShopForDentalPlan = () => {
                 label={field.label}
                 placeholder={field.label}
                 value={answers[field.id] ?? ''}
+                validate={field.validate}
                 onChange={(event) => setAnswer(field.id, event.target.value)}
+                onValidityChange={(isValid) =>
+                  setValidity((current) =>
+                    current[field.id] === isValid
+                      ? current
+                      : { ...current, [field.id]: isValid },
+                  )
+                }
               />
             ))}
           </div>

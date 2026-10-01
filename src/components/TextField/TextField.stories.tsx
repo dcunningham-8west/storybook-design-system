@@ -35,3 +35,19 @@ export const Disabled: Story = {
     disabled: true,
   },
 };
+
+export const BirthdayValidation: Story = {
+  args: {
+    label: 'Birthday (mm/dd/yyyy)',
+    placeholder: 'Birthday (mm/dd/yyyy)',
+    validate: 'birthday',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Set `validate="birthday"` to turn a standard field into a date-format field. Type something like `13/45/2020` and tab away to see the message.',
+      },
+    },
+  },
+};
