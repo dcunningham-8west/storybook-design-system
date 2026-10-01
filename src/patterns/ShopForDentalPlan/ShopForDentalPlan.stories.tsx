@@ -129,6 +129,9 @@ const ShopForDentalPlan = () => {
   );
 };
 
+// Survives minification so docs "Show code" renders the name, not <f />.
+ShopForDentalPlan.displayName = 'ShopForDentalPlan';
+
 const meta = {
   title: 'Patterns/Shop For A Dental Plan',
   component: ShopForDentalPlan,

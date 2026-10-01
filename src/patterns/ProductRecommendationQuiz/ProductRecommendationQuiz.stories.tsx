@@ -269,6 +269,9 @@ const ProductRecommendationQuiz = () => {
   );
 };
 
+// Survives minification so docs "Show code" renders the name, not <f />.
+ProductRecommendationQuiz.displayName = 'ProductRecommendationQuiz';
+
 const meta = {
   title: 'Patterns/Product Recommendation Quiz',
   component: ProductRecommendationQuiz,
