@@ -26,6 +26,8 @@ export interface WizardProps {
   onComplete: () => void;
   /** Disable the primary action until the active step is valid. */
   canContinue?: boolean;
+  /** Label for the secondary action shown after the first step. */
+  backLabel?: string;
   /** Label for the primary action before the final step. */
   nextLabel?: string;
   /** Label for the primary action on the final step. */
@@ -40,6 +42,7 @@ export const Wizard = ({
   onNext,
   onComplete,
   canContinue = true,
+  backLabel = 'Back',
   nextLabel = 'Continue',
   completeLabel = 'Complete',
 }: WizardProps) => {
@@ -74,7 +77,12 @@ export const Wizard = ({
 
       <footer className="wizard__actions">
         {currentStep > 0 ? (
-          <CTAButton label="Back" size="medium" isSecondary onClick={onBack} />
+          <CTAButton
+            label={backLabel}
+            size="medium"
+            isSecondary
+            onClick={onBack}
+          />
         ) : (
           <span />
         )}
