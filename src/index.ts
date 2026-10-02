@@ -1,5 +1,3 @@
-export { Card } from './components/Card/Card';
-export type { CardProps } from './components/Card/Card';
 export { ChoiceTileGroup } from './components/ChoiceTileGroup/ChoiceTileGroup';
 export type {
   ChoiceTileGroupProps,

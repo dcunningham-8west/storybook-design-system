@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Card } from '../../components/Card/Card';
 import {
   ChoiceTileGroup,
   type ChoiceTileOption,
@@ -232,11 +231,9 @@ const ProductRecommendationQuiz = () => {
           </p>
           <div className="recommendation-quiz__products">
             {products.map((product, index) => (
-              <Card
-                key={product.title}
-                {...product}
-                isHighlighted={index === 0}
-              />
+              <div>
+                {product.title} {String(index)}
+              </div>
             ))}
           </div>
           <CTAButton label="Start again" isSecondary onClick={restart} />
@@ -281,7 +278,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A four-question recommendation pattern composed from Wizard, ChoiceTileGroup, CTAButton and Card. The story owns the questions, answers and matching rules.',
+          'A four-question recommendation pattern composed from Wizard, ChoiceTileGroup and CTAButton. The story owns the questions, answers and matching rules.',
       },
     },
   },
