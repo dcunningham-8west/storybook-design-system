@@ -26,6 +26,9 @@ dist-ssr
 *storybook.log
 storybook-static
 ddpa-company-design-system-0.1.0.tgz
+local-installations
+
+.prettierrc
 
 *.scss
 *.css.map

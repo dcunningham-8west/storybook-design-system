@@ -1,6 +1,6 @@
 {
   "name": "@dcunningham-8west/design-system",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "files": [
     "dist"
@@ -22,6 +22,7 @@
     "build:js": "vite build --config vite.config.lib.ts",
     "build:types": "tsc -p tsconfig.lib.json",
     "lint": "oxlint",
+    "format": "prettier --write \"src/**/*.tsx\"",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
@@ -47,6 +48,7 @@
     "@vitest/coverage-v8": "latest",
     "oxlint": "^1.81.0",
     "playwright": "latest",
+    "prettier": "^3.9.9",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "storybook": "^10.6.0",
