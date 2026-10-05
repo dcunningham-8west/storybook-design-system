@@ -63,5 +63,13 @@
 }
 
 .text-field__error {
-  color: #a83232;
+  margin: 0.5rem 0 0 0;
+  color: #c35500;
+}
+
+.text-field__error::before {
+  content: '\26A0';
+  margin-right: 5px;
+  color: #f4c542;
+  font-size: 17px;
 }
