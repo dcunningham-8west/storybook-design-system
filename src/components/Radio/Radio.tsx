@@ -10,6 +10,5 @@ export const Radio = ({ className, ...props }: RadioProps) => (
       className={['radio__input', className].filter(Boolean).join(' ')}
       type="radio"
     />
-    <span className="radio__indicator" aria-hidden="true" />
   </span>
 );
