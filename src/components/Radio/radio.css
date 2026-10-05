@@ -51,7 +51,6 @@
 
 .radio__input:checked::before {
   background: #1d8928;
-  transform: translate3d(0, 0, 0) scale(1) rotate(0);
 }
 
 .radio__input:focus-visible {
