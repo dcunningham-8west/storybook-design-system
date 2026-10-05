@@ -1,0 +1,47 @@
+.radio {
+  position: relative;
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.radio__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: inherit;
+}
+
+.radio__indicator {
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+  border: 2px solid #8c9890;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.radio__input:checked + .radio__indicator {
+  border-color: #1d8928;
+  box-shadow: inset 0 0 0 4px #fff;
+  background: #1d8928;
+}
+
+.radio__input:focus-visible + .radio__indicator {
+  outline: 3px solid #f3bd3d;
+  outline-offset: 3px;
+}
+
+.radio__input:disabled + .radio__indicator {
+  opacity: 0.5;
+}
+
+.radio:has(.radio__input:disabled) {
+  cursor: not-allowed;
+}

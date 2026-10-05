@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { RadioGroup, type RadioOption } from '../RadioGroup/RadioGroup';
+import {
+  ChoiceTileGroup,
+  type ChoiceTileOption,
+} from '../ChoiceTileGroup/ChoiceTileGroup';
 import { TextField } from '../TextField/TextField';
 import { Wizard, type WizardStep } from './Wizard';
 import './Wizard.stories.css';
@@ -23,7 +26,7 @@ const steps: WizardStep[] = [
   },
 ];
 
-const planOptions: RadioOption[] = [
+const planOptions: ChoiceTileOption[] = [
   { label: 'Starter', value: 'Starter', description: 'For small teams.' },
   {
     label: 'Standard',
@@ -103,7 +106,7 @@ const ProductWizardExample = () => {
         )}
 
         {currentStep === 1 && (
-          <RadioGroup
+          <ChoiceTileGroup
             legend="Default plan"
             name="default-plan"
             options={planOptions}
@@ -137,7 +140,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A complete product-setup pattern composed from Wizard, TextField, and RadioGroup. Wizard renders StepIndicator automatically, showing completed, current, and upcoming steps based on `steps` and `currentStep`; the application does not need to add it separately. The consuming application owns product data, field validation, and submission behavior.',
+          'A complete product-setup pattern composed from Wizard, TextField, and ChoiceTileGroup. Wizard renders StepIndicator automatically, showing completed, current, and upcoming steps based on `steps` and `currentStep`; the application does not need to add it separately. The consuming application owns product data, field validation, and submission behavior.',
       },
     },
   },

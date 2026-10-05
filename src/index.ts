@@ -1,3 +1,5 @@
+export { ChoiceTile } from './components/ChoiceTile/ChoiceTile';
+export type { ChoiceTileProps } from './components/ChoiceTile/ChoiceTile';
 export { ChoiceTileGroup } from './components/ChoiceTileGroup/ChoiceTileGroup';
 export type {
   ChoiceTileGroupProps,
@@ -5,11 +7,8 @@ export type {
 } from './components/ChoiceTileGroup/ChoiceTileGroup';
 export { CTAButton } from './components/CTAButton/CTAButton';
 export type { CTAButtonProps } from './components/CTAButton/CTAButton';
-export { RadioGroup } from './components/RadioGroup/RadioGroup';
-export type {
-  RadioGroupProps,
-  RadioOption,
-} from './components/RadioGroup/RadioGroup';
+export { Radio } from './components/Radio/Radio';
+export type { RadioProps } from './components/Radio/Radio';
 export { StepIndicator } from './components/StepIndicator/StepIndicator';
 export type {
   StepIndicatorProps,

@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import { ChoiceTile } from '../ChoiceTile/ChoiceTile';
 import './choice-tile-group.css';
 
 export interface ChoiceTileOption {
@@ -38,37 +39,16 @@ export const ChoiceTileGroup = ({
         </p>
       )}
       <div className="choice-tile-group__grid">
-        {options.map((option, index) => {
-          const optionId = `${groupName}-${index}`;
-          const descriptionId = option.description
-            ? `${optionId}-description`
-            : undefined;
-
-          return (
-            <label className="choice-tile" key={option.value}>
-              <input
-                className="choice-tile__input"
-                id={optionId}
-                type="radio"
-                name={groupName}
-                value={option.value}
-                checked={value === option.value}
-                disabled={option.disabled}
-                aria-describedby={descriptionId}
-                onChange={(event) => onValueChange(event.target.value)}
-              />
-              <span className="choice-tile__indicator" aria-hidden="true" />
-              <span className="choice-tile__text">
-                <span className="choice-tile__label">{option.label}</span>
-                {option.description && (
-                  <span id={descriptionId} className="choice-tile__description">
-                    {option.description}
-                  </span>
-                )}
-              </span>
-            </label>
-          );
-        })}
+        {options.map((option, index) => (
+          <ChoiceTile
+            key={option.value}
+            {...option}
+            id={`${groupName}-${index}`}
+            name={groupName}
+            checked={value === option.value}
+            onChange={(event) => onValueChange(event.target.value)}
+          />
+        ))}
       </div>
     </fieldset>
   );

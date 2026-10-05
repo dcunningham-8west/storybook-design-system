@@ -30,4 +30,23 @@ If you are developing a production application, we recommend enabling type-aware
 ```
 
 See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+
 # storybook-design-system
+
+## Radio Controls
+
+`Radio` is the shared radio-button primitive and accepts native radio input props,
+including `checked`, `defaultChecked`, `onChange`, `disabled`, and ARIA attributes.
+Provide an accessible name with a wrapping label, `aria-label`, or `aria-labelledby`.
+Labels, descriptions, and group layout belong to the consuming component.
+
+`ChoiceTile` is a single selectable tile built on `Radio`. It adds `label` and
+optional `description` props alongside native radio props such as `checked`,
+`onChange`, `name`, `value`, and `disabled`. Its Storybook entry under
+Components shows one tile with editable controls.
+
+`ChoiceTileGroup` composes `ChoiceTile` instances and owns the group legend,
+hint, options, and selection callback. Its grouped examples appear under
+Patterns in Storybook. The existing group API remains available. The former `RadioGroup`,
+`RadioGroupProps`, and `RadioOption` exports have been removed; use
+`ChoiceTileGroup`, `ChoiceTileGroupProps`, and `ChoiceTileOption` instead.

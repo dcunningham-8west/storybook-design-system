@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { RadioGroup, type RadioOption } from '../RadioGroup/RadioGroup';
+import {
+  ChoiceTileGroup,
+  type ChoiceTileOption,
+} from '../ChoiceTileGroup/ChoiceTileGroup';
 import { TextField } from '../TextField/TextField';
 import { Wizard, type WizardStep } from './Wizard';
 
@@ -10,7 +13,7 @@ const steps: WizardStep[] = [
   { id: 'workspace-review', label: 'Review' },
 ];
 
-const planOptions: RadioOption[] = [
+const planOptions: ChoiceTileOption[] = [
   { label: 'Starter', value: 'Starter' },
   { label: 'Team', value: 'Team' },
   { label: 'Enterprise', value: 'Enterprise' },
@@ -53,7 +56,7 @@ const WizardUsageExample = () => {
         />
       )}
       {currentStep === 1 && (
-        <RadioGroup
+        <ChoiceTileGroup
           legend="Choose a plan"
           options={planOptions}
           value={plan}
@@ -98,11 +101,11 @@ const meta = {
           '  onComplete={submitForm}',
           '>',
           '  {currentStep === 0 && <TextField label="Workspace name" />}',
-          '  {currentStep === 1 && <RadioGroup legend="Choose a plan" />}',
+          '  {currentStep === 1 && <ChoiceTileGroup legend="Choose a plan" options={planOptions} value={plan} onValueChange={setPlan} />}',
           '</Wizard>',
           '```',
           '',
-          'Compose the active step from controls such as TextField, RadioGroup, or ChoiceTileGroup. Keep form values, validation rules, and submission behavior in the consuming application.',
+          'Compose the active step from controls such as TextField or ChoiceTileGroup. ChoiceTileGroup composes the shared Radio control. Keep form values, validation rules, and submission behavior in the consuming application.',
         ].join('\n'),
       },
     },

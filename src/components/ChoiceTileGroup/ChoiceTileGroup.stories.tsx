@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { expect, userEvent, within } from 'storybook/test';
 import { ChoiceTileGroup, type ChoiceTileGroupProps } from './ChoiceTileGroup';
 
 const options = [
@@ -22,12 +23,24 @@ const options = [
 ];
 
 const StatefulChoiceTileGroup = (props: ChoiceTileGroupProps) => {
+  const instanceId = useId();
   const [value, setValue] = useState(props.value);
-  return <ChoiceTileGroup {...props} value={value} onValueChange={setValue} />;
+
+  return (
+    <ChoiceTileGroup
+      {...props}
+      name={`${props.name ?? 'example-choice-tile-group'}-${instanceId}`}
+      value={value}
+      onValueChange={(nextValue) => {
+        setValue(nextValue);
+        props.onValueChange(nextValue);
+      }}
+    />
+  );
 };
 
 const meta = {
-  title: 'Components/ChoiceTileGroup',
+  title: 'Patterns/ChoiceTileGroup',
   component: ChoiceTileGroup,
   tags: ['autodocs'],
   args: {
@@ -37,13 +50,31 @@ const meta = {
     value: 'guided',
     onValueChange: () => undefined,
   },
-  render: (args) => <StatefulChoiceTileGroup {...args} />,
+  render: (args) => (
+    <StatefulChoiceTileGroup key={args.value ?? 'no-selection'} {...args} />
+  ),
 } satisfies Meta<typeof ChoiceTileGroup>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const quick = canvas.getByRole('radio', { name: /Quick setup/ });
+    const guided = canvas.getByRole('radio', { name: /Guided setup/ });
+
+    await expect(guided).toBeChecked();
+    await expect(quick).toHaveAccessibleDescription('Ready in minutes.');
+    await userEvent.click(canvas.getByText('Quick setup'));
+    await expect(quick).toBeChecked();
+    await expect(guided).not.toBeChecked();
+    quick.focus();
+    await userEvent.keyboard('{ArrowRight}');
+    await expect(guided).toBeChecked();
+    await expect(guided).toHaveFocus();
+  },
+};
 
 export const NoSelection: Story = {
   args: {
@@ -57,5 +88,16 @@ export const WithDisabledOption: Story = {
       ...option,
       disabled: index === 3,
     })),
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const expert = canvas.getByRole('radio', { name: /Expert setup/ });
+
+    await expect(expert).toBeDisabled();
+    await userEvent.click(canvas.getByText('Expert setup'));
+    await expect(expert).not.toBeChecked();
+    await expect(
+      canvas.getByRole('radio', { name: /Guided setup/ }),
+    ).toBeChecked();
   },
 };

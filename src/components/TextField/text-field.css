@@ -17,27 +17,28 @@
 
 .text-field__input {
   box-sizing: border-box;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   width: 100%;
-  min-height: 44px;
+  max-width: 100%;
+  height: auto;
+  min-height: 48px;
   padding: 0 12px;
-  border: 1px solid #aeb8b1;
-  border-radius: 4px;
-  background: #fff;
-  color: #17211b;
-  font: inherit;
-}
-
-.text-field__input[aria-invalid='true'] {
-  border-color: #a83232;
-}
-
-.text-field__input:focus-visible {
-  outline: 3px solid #f3bd3d;
-  outline-offset: 2px;
+  margin: 0;
+  border: 1px solid #757575;
+  border-radius: 3px;
+  color: black;
+  background-color: white;
+  text-overflow: ellipsis;
+  box-shadow: 0 0;
+  line-height: 1.42857143;
+  outline: 0;
+  font-size: 16px;
 }
 
 .text-field__input:disabled {
-  background: #edf0ed;
   cursor: not-allowed;
 }
 
