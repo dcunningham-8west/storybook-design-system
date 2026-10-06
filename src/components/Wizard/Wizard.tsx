@@ -32,6 +32,10 @@ export interface WizardProps {
   nextLabel?: string;
   /** Label for the primary action on the final step. */
   completeLabel?: string;
+  /** Show the progress indicator and separate step counter. */
+  showProgress?: boolean;
+  /** Render navigation actions inside the active step's content container. */
+  actionsInContent?: boolean;
 }
 
 export const Wizard = ({
@@ -45,6 +49,8 @@ export const Wizard = ({
   backLabel = 'Back',
   nextLabel = 'Continue',
   completeLabel = 'Complete',
+  showProgress = true,
+  actionsInContent = false,
 }: WizardProps) => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const step = steps[currentStep];
@@ -58,41 +64,52 @@ export const Wizard = ({
     throw new Error('Wizard currentStep must identify an item in steps.');
   }
 
+  const actions = (
+    <footer className="wizard__actions">
+      {currentStep > 0 ? (
+        <CTAButton
+          label={backLabel}
+          size="medium"
+          isSecondary
+          onClick={onBack}
+        />
+      ) : (
+        <span />
+      )}
+      <CTAButton
+        label={isLastStep ? completeLabel : nextLabel}
+        size="medium"
+        disabled={!canContinue}
+        onClick={isLastStep ? onComplete : onNext}
+      />
+    </footer>
+  );
+
   return (
     <section className="wizard" aria-labelledby={`${step.id}-title`}>
-      <StepIndicator steps={steps} currentStep={currentStep} />
+      {showProgress && (
+        <StepIndicator steps={steps} currentStep={currentStep} />
+      )}
 
       <div className="wizard__body">
-        <p className="wizard__eyebrow">
-          Step {currentStep + 1} of {steps.length}
-        </p>
+        {showProgress && (
+          <p className="wizard__eyebrow">
+            Step {currentStep + 1} of {steps.length}
+          </p>
+        )}
         <h2 id={`${step.id}-title`} ref={headingRef} tabIndex={-1}>
           {step.label}
         </h2>
         {step.description && (
           <p className="wizard__description">{step.description}</p>
         )}
-        <div className="wizard__content">{children}</div>
+        <div className="wizard__content">
+          {children}
+          {actionsInContent && actions}
+        </div>
       </div>
 
-      <footer className="wizard__actions">
-        {currentStep > 0 ? (
-          <CTAButton
-            label={backLabel}
-            size="medium"
-            isSecondary
-            onClick={onBack}
-          />
-        ) : (
-          <span />
-        )}
-        <CTAButton
-          label={isLastStep ? completeLabel : nextLabel}
-          size="medium"
-          disabled={!canContinue}
-          onClick={isLastStep ? onComplete : onNext}
-        />
-      </footer>
+      {!actionsInContent && actions}
     </section>
   );
 };

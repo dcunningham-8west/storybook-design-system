@@ -1,0 +1,12 @@
+.communication-consent {
+  display: grid;
+  gap: 16px;
+  margin-top: 20px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.communication-consent__description {
+  margin: 0;
+  overflow-wrap: anywhere;
+}

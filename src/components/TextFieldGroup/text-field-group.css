@@ -1,0 +1,31 @@
+.text-field-group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.text-field-group__title {
+  max-width: 100%;
+  margin-bottom: 20px;
+  padding: 0;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.text-field-group__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 24px;
+}
+
+.text-field-group__fields > * {
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .text-field-group__fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,160 @@
+@font-face {
+  font-family: 'Gotham';
+  src: url('../../assets/fonts/Gotham-Book_Web.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gotham';
+  src: url('../../assets/fonts/Gotham-Light_Web.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+}
+
+.registration {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 48px 24px;
+  background: #f5f6f5;
+}
+
+.registration .wizard {
+  box-sizing: border-box;
+  box-shadow: none;
+}
+
+.registration .wizard__content {
+  padding: 32px;
+  background: white;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1607843137);
+  border-radius: 3px;
+}
+
+.registration .wizard__actions {
+  margin-top: 32px;
+  padding: 0;
+  border-top: 0;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.registration .wizard__body h2 {
+  text-align: center;
+  font-size: 48px;
+  font-family: 'Gotham', 'Nunito Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  color: #1d8928;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.registration .radio-group__legend,
+.registration .registration__subscriber .text-field-group__title,
+.registration .registration__success .registration__success-title {
+  font-size: 32px;
+  font-family: 'Gotham', 'Nunito Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 400;
+  line-height: 1.1;
+  color: #000;
+  margin-bottom: 20px;
+  overflow-wrap: anywhere;
+}
+
+.registration .radio-group__options {
+  margin-top: 0;
+}
+
+.registration .radio-group__option {
+  font-size: 16px;
+  font-family: 'Gotham', 'Nunito Sans', 'Helvetica Neue', sans-serif;
+  font-weight: 300;
+  color: #000;
+  line-height: 1.5em;
+}
+
+.registration__form {
+  display: grid;
+  gap: 32px;
+  font-family: 'Gotham', 'Nunito Sans', 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #000;
+}
+
+.registration__description {
+  margin: 0;
+}
+
+.registration__description > p {
+  margin: 0;
+}
+
+.registration__description > p + p {
+  margin-top: 16px;
+}
+
+.registration__description a {
+  color: #1d8928;
+  text-decoration: underline;
+}
+
+.registration__form .text-field-group__title {
+  font-weight: 300;
+}
+
+.registration__form .text-field {
+  font-family: inherit;
+  color: inherit;
+}
+
+.registration__form .text-field__label {
+  display: flex;
+  font-weight: 400;
+  text-align: left;
+}
+
+.registration__form .text-field__required {
+  order: -1;
+  margin-left: 0;
+  margin-right: 4px;
+}
+
+.registration__form .text-field__input {
+  font-family: inherit;
+  font-weight: 300;
+}
+
+.registration .registration__success .wizard__body {
+  min-height: 0;
+}
+
+.registration .registration__success .wizard__content {
+  margin-top: 32px;
+  font-family: 'Gotham', 'Nunito Sans', 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #000;
+}
+
+.registration .registration__success .registration__success-title {
+  text-align: left;
+}
+
+.registration .registration__success .registration__description {
+  overflow-wrap: anywhere;
+}
+
+.registration .registration__success .wizard__actions {
+  justify-content: flex-end;
+}
+
+@media (max-width: 600px) {
+  .registration {
+    padding: 16px;
+  }
+}

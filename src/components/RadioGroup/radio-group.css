@@ -1,0 +1,63 @@
+.radio-group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: #17211b;
+  font-family: 'Nunito Sans', 'Helvetica Neue', sans-serif;
+}
+
+.radio-group__legend {
+  max-width: 100%;
+  padding: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.radio-group .radio-group__legend.radio-group__legend--hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.radio-group__options {
+  display: grid;
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.radio-group--inline .radio-group__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px 32px;
+}
+
+.radio-group__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.radio-group__option > .radio {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.radio-group__option > span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.radio-group__option:has(input:disabled) {
+  color: #5d6961;
+  cursor: not-allowed;
+}

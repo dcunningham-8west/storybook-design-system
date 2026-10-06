@@ -3,7 +3,7 @@
   --wizard-muted: #5d6961;
   --wizard-line: #d8ddd9;
   --wizard-surface: #ffffff;
-  width: min(100%, 760px);
+  width: min(100%, 1024px);
   margin: 0 auto;
   border: 1px solid var(--wizard-line);
   border-radius: 8px;
