@@ -41,7 +41,7 @@ export const StepIndicator = ({
               aria-current={state === 'current' ? 'step' : undefined}
             >
               <span className="step-indicator__number" aria-hidden="true">
-                {state === 'complete' ? '✓' : index + 1}
+                {index + 1}
               </span>
               <span className="step-indicator__label">{step.label}</span>
               {state === 'complete' && (

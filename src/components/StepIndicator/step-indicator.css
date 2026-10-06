@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Gotham';
+  src: url('../../assets/fonts/Gotham-Book_Web.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 .step-indicator {
   padding: 24px 32px;
   border-bottom: 1px solid #d8ddd9;
@@ -17,33 +25,65 @@
 
 .step-indicator__step {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  position: relative;
   min-width: 0;
   font-size: 14px;
   font-weight: 700;
 }
 
+.step-indicator__step:not(:last-child)::after {
+  position: absolute;
+  top: 12px;
+  right: calc(-50% + 4px);
+  left: calc(50% + 20px);
+  z-index: 0;
+  border-top: 1px solid #bdbdbd;
+  content: '';
+  transform: translateY(-50%);
+}
+
 .step-indicator__step[data-state='current'] {
-  color: #17211b;
+  color: #000;
 }
 
 .step-indicator__number {
   display: grid;
-  flex: 0 0 28px;
-  width: 28px;
-  height: 28px;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
   place-items: center;
   border: 1px solid #aeb8b1;
   border-radius: 50%;
-  background: #fff;
-  font-size: 13px;
+  background: rgba(0, 0, 0, 0.38);
+  color: #fff;
+  font-size: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.step-indicator__label {
+  margin-top: 16px;
+  position: relative;
+  z-index: 1;
+  background: #f6f8f6;
+  color: rgba(0, 0, 0, 0.6);
+  font-family: 'Gotham', 'Helvetica Neue', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+}
+
+[data-state='complete'] .step-indicator__label,
+[data-state='current'] .step-indicator__label {
+  color: #000;
 }
 
 [data-state='complete'] .step-indicator__number,
 [data-state='current'] .step-indicator__number {
-  border-color: #1d8928;
-  background: #1d8928;
+  border-color: #40a828;
+  background: #40a828;
   color: #fff;
 }
 
