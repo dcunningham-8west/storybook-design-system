@@ -32,3 +32,5 @@ export type {
 } from './components/TextField/validation';
 export { Wizard } from './components/Wizard/Wizard';
 export type { WizardProps, WizardStep } from './components/Wizard/Wizard';
+export { WizardButton } from './components/WizardButton/WizardButton';
+export type { WizardButtonProps } from './components/WizardButton/WizardButton';

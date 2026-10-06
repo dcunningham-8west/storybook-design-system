@@ -1,9 +1,14 @@
 import { useId, useState } from 'react';
 import { RadioGroup } from '../../components/RadioGroup/RadioGroup';
-import { TextField } from '../../components/TextField/TextField';
-import { TextFieldGroup } from '../../components/TextFieldGroup/TextFieldGroup';
+import { StepIndicator } from '../../components/StepIndicator/StepIndicator';
 import { Wizard } from '../../components/Wizard/Wizard';
 import { RegistrationSuccessPanel } from './RegistrationSuccessPanel';
+import {
+  ProviderRegistrationPanel,
+  emptyRegistrationDetails,
+  type RegistrationDetails,
+} from './ProviderRegistrationPanel';
+export type { RegistrationDetails } from './ProviderRegistrationPanel';
 import {
   ProviderAccountPanel,
   emptyProviderAccount,
@@ -23,32 +28,31 @@ import {
   isSubscriberDetailsComplete,
   type SubscriberRegistrationDetails,
 } from './SubscriberRegistrationPanel';
+import {
+  FacilityRegistrationPanel,
+  emptyFacilityRegistrationDetails,
+  facilityRegistrationSteps,
+  isFacilityRegistrationDetailsComplete,
+  type FacilityRegistrationDetails,
+} from './FacilityRegistrationPanel';
 import './registration.css';
 
 export type RegistrationRole = 'dentist' | 'member' | 'facility';
-export type RegistrationRoute = 'provider' | 'subscriber';
+export type RegistrationRoute = 'provider' | 'subscriber' | 'facility';
 
-const routeByRole: Partial<Record<RegistrationRole, RegistrationRoute>> = {
+const routeByRole: Record<RegistrationRole, RegistrationRoute> = {
   dentist: 'provider',
   member: 'subscriber',
+  facility: 'facility',
 };
-
-export interface RegistrationDetails {
-  firstName: string;
-  lastName: string;
-  businessTaxId: string;
-  businessCity: string;
-  businessPostalCode: string;
-  dentistFirstName: string;
-  dentistLastName: string;
-  licenseId: string;
-  licenseState: string;
-}
 
 export interface RegistrationProps {
   onNext: (
     role: RegistrationRole,
-    details?: RegistrationDetails | SubscriberRegistrationDetails,
+    details?:
+      | RegistrationDetails
+      | SubscriberRegistrationDetails
+      | FacilityRegistrationDetails,
   ) => void;
   onRegister?: (
     provider: RegistrationDetails,
@@ -63,50 +67,6 @@ export interface RegistrationProps {
   initialRole?: RegistrationRole;
   initialVerificationEmail?: string;
 }
-
-const emptyDetails: RegistrationDetails = {
-  firstName: '',
-  lastName: '',
-  businessTaxId: '',
-  businessCity: '',
-  businessPostalCode: '',
-  dentistFirstName: '',
-  dentistLastName: '',
-  licenseId: '',
-  licenseState: '',
-};
-
-const fieldGroups: {
-  title: string;
-  fields: { name: keyof RegistrationDetails; label: string }[];
-}[] = [
-  {
-    title: 'Enter the name of the person completing this registration form.',
-    fields: [
-      { name: 'firstName', label: 'First Name:' },
-      { name: 'lastName', label: 'Last Name:' },
-    ],
-  },
-  {
-    title:
-      'Enter information about your office. This will be used to determine your office location for mailing purposes.',
-    fields: [
-      { name: 'businessTaxId', label: 'Business Tax ID:' },
-      { name: 'businessCity', label: 'Business City:' },
-      { name: 'businessPostalCode', label: 'Business Postal Code:' },
-    ],
-  },
-  {
-    title:
-      'Enter information about a dentist in your office. This will be used to validate your registration request.',
-    fields: [
-      { name: 'dentistFirstName', label: 'Dentist First Name:' },
-      { name: 'dentistLastName', label: 'Dentist Last Name:' },
-      { name: 'licenseId', label: 'License ID:' },
-      { name: 'licenseState', label: 'License State:' },
-    ],
-  },
-];
 
 const roleOptions = [
   {
@@ -134,8 +94,10 @@ export const Registration = ({
   initialVerificationEmail = 'tnussbaumer@deltadental.com',
 }: RegistrationProps) => {
   const instanceId = useId();
+  const initialRegistrationStep =
+    initialRole && routeByRole[initialRole] ? initialStep : 0;
   const [currentStep, setCurrentStep] = useState<0 | 1 | 2 | 3>(
-    initialRole && routeByRole[initialRole] ? initialStep : 0,
+    initialRegistrationStep,
   );
   const [role, setRole] = useState<RegistrationRole | undefined>(initialRole);
   const route = role ? routeByRole[role] : undefined;
@@ -144,10 +106,13 @@ export const Registration = ({
   );
   const [isRegistering, setIsRegistering] = useState(false);
   const [registrationError, setRegistrationError] = useState<string>();
-  const [details, setDetails] = useState(emptyDetails);
+  const [details, setDetails] = useState(emptyRegistrationDetails);
   const detailsComplete = Object.values(details).every((value) => value.trim());
   const [subscriberDetails, setSubscriberDetails] = useState(
     emptySubscriberDetails,
+  );
+  const [facilityDetails, setFacilityDetails] = useState(
+    emptyFacilityRegistrationDetails,
   );
   const [providerAccount, setProviderAccount] = useState(emptyProviderAccount);
   const providerAccountComplete = isProviderAccountComplete(providerAccount);
@@ -157,18 +122,28 @@ export const Registration = ({
   const activeAccountComplete =
     route === 'provider'
       ? providerAccountComplete
-      : isSubscriberAccountComplete(subscriberAccount);
+      : route === 'subscriber'
+        ? isSubscriberAccountComplete(subscriberAccount)
+        : false;
   const activeDetailsComplete =
     route === 'provider'
       ? detailsComplete
-      : isSubscriberDetailsComplete(subscriberDetails);
+      : route === 'subscriber'
+        ? isSubscriberDetailsComplete(subscriberDetails)
+        : isFacilityRegistrationDetailsComplete(facilityDetails);
   const steps = Array.from({ length: 4 }, (_, index) => ({
     id: `registration-${instanceId}-${index + 1}`,
     label: `Registration - step ${index + 1} of 4`,
   }));
 
   const registerAccount = async () => {
-    if (!route || !activeAccountComplete || isRegistering) return;
+    if (
+      !route ||
+      route === 'facility' ||
+      !activeAccountComplete ||
+      isRegistering
+    )
+      return;
     setIsRegistering(true);
     setRegistrationError(undefined);
     try {
@@ -212,18 +187,100 @@ export const Registration = ({
     ) {
       setCurrentStep(2);
       onNext(role, subscriberDetails);
+    } else if (
+      currentStep === 1 &&
+      route === 'facility' &&
+      activeDetailsComplete
+    ) {
+      setCurrentStep(2);
+      onNext(role, facilityDetails);
     } else if (currentStep === 2) {
       void registerAccount();
     }
   };
 
-  if (currentStep === 3 && route) {
+  if (currentStep === 1 && route === 'facility') {
+    return (
+      <main className="registration" data-registration-route={route}>
+        <FacilityRegistrationPanel
+          value={facilityDetails}
+          onValueChange={setFacilityDetails}
+          onCancel={() => {
+            setRole(undefined);
+            setCurrentStep(0);
+          }}
+          onContinue={() => {
+            if (role) {
+              setCurrentStep(2);
+              onNext(role, facilityDetails);
+            }
+          }}
+        />
+      </main>
+    );
+  }
+
+  if (currentStep === 2 && route === 'facility') {
+    return (
+      <main className="registration" data-registration-route={route}>
+        <section className="registration__facility-panel">
+          <StepIndicator
+            steps={facilityRegistrationSteps}
+            currentStep={1}
+            ariaLabel="Facility registration progress"
+          />
+          <Wizard
+            steps={[
+              {
+                id: 'facility-details-complete',
+                label: 'Enter Facility Details',
+              },
+              {
+                id: 'facility-complete-registration',
+                label: 'Complete Registration',
+              },
+            ]}
+            currentStep={1}
+            showProgress={false}
+            actionsInContent
+            canContinue={detailsComplete}
+            nextLabel="Continue"
+            completeLabel="Continue"
+            onBack={() => setCurrentStep(1)}
+            onNext={() => undefined}
+            onComplete={() => {
+              if (role && detailsComplete) {
+                setCurrentStep(3);
+                onNext(role, details);
+              }
+            }}
+          >
+            <ProviderRegistrationPanel
+              value={details}
+              onValueChange={setDetails}
+            />
+          </Wizard>
+        </section>
+      </main>
+    );
+  }
+
+  if (
+    currentStep === 3 &&
+    (route === 'provider' || route === 'subscriber' || route === 'facility')
+  ) {
     return (
       <main className="registration" data-registration-route={route}>
         <RegistrationSuccessPanel
-          route={route}
+          route={route === 'facility' ? 'provider' : route}
           email={verificationEmail}
           onProceedToSignIn={() => onProceedToSignIn?.(route)}
+          stepLabel={route === 'facility' ? null : 'Registration - step 4 of 4'}
+          progress={
+            route === 'facility'
+              ? { steps: facilityRegistrationSteps, currentStep: 2 }
+              : undefined
+          }
         />
       </main>
     );
@@ -266,42 +323,16 @@ export const Registration = ({
             value={providerAccount}
             onValueChange={setProviderAccount}
           />
-        ) : currentStep === 2 ? (
+        ) : currentStep === 2 && route === 'subscriber' ? (
           <SubscriberAccountPanel
             value={subscriberAccount}
             onValueChange={setSubscriberAccount}
           />
         ) : route === 'provider' ? (
-          <div className="registration__form">
-            <p className="registration__description">
-              Please enter your information in the registration form below.
-              Required fields are indicated with an asterisk (*).{' '}
-              <a href="https://www.deltadental.com/us/en/about-us/contact-us.html">
-                Contact us
-              </a>{' '}
-              if you are having difficulty registering.
-            </p>
-            {fieldGroups.map((group) => (
-              <TextFieldGroup key={group.title} title={group.title}>
-                {group.fields.map((field) => (
-                  <TextField
-                    key={field.name}
-                    label={field.label}
-                    name={field.name}
-                    type="text"
-                    value={details[field.name]}
-                    onChange={(event) =>
-                      setDetails((current) => ({
-                        ...current,
-                        [field.name]: event.target.value,
-                      }))
-                    }
-                    required
-                  />
-                ))}
-              </TextFieldGroup>
-            ))}
-          </div>
+          <ProviderRegistrationPanel
+            value={details}
+            onValueChange={setDetails}
+          />
         ) : (
           <SubscriberRegistrationPanel
             value={subscriberDetails}

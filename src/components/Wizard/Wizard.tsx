@@ -1,5 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react';
-import { CTAButton } from '../CTAButton/CTAButton';
+import { WizardButton } from '../WizardButton/WizardButton';
 import {
   StepIndicator,
   type StepIndicatorStep,
@@ -66,19 +66,9 @@ export const Wizard = ({
 
   const actions = (
     <footer className="wizard__actions">
-      {currentStep > 0 ? (
-        <CTAButton
-          label={backLabel}
-          size="medium"
-          isSecondary
-          onClick={onBack}
-        />
-      ) : (
-        <span />
-      )}
-      <CTAButton
+      {currentStep > 0 && <WizardButton label={backLabel} onClick={onBack} />}
+      <WizardButton
         label={isLastStep ? completeLabel : nextLabel}
-        size="medium"
         disabled={!canContinue}
         onClick={isLastStep ? onComplete : onNext}
       />

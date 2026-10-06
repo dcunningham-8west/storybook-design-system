@@ -1,16 +1,25 @@
 import { useEffect, useId, useRef } from 'react';
-import { CTAButton } from '../../components/CTAButton/CTAButton';
+import { StepIndicator } from '../../components/StepIndicator/StepIndicator';
+import type { StepIndicatorStep } from '../../components/StepIndicator/StepIndicator';
+import { WizardButton } from '../../components/WizardButton/WizardButton';
 
 export interface RegistrationSuccessPanelProps {
   route: 'provider' | 'subscriber';
   email: string;
   onProceedToSignIn: () => void;
+  stepLabel?: string | null;
+  progress?: {
+    steps: readonly StepIndicatorStep[];
+    currentStep: number;
+  };
 }
 
 export const RegistrationSuccessPanel = ({
   route,
   email,
   onProceedToSignIn,
+  stepLabel = 'Registration - step 4 of 4',
+  progress,
 }: RegistrationSuccessPanelProps) => {
   const titleId = useId();
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -21,8 +30,15 @@ export const RegistrationSuccessPanel = ({
 
   return (
     <section className="wizard registration__success" aria-labelledby={titleId}>
+      {progress && (
+        <StepIndicator
+          steps={progress.steps}
+          currentStep={progress.currentStep}
+          ariaLabel="Facility registration progress"
+        />
+      )}
       <div className="wizard__body">
-        <h2>Registration - step 4 of 4</h2>
+        {stepLabel && <h2>{stepLabel}</h2>}
         <div className="wizard__content">
           <h2
             className="registration__success-title"
@@ -48,7 +64,10 @@ export const RegistrationSuccessPanel = ({
             )}
           </p>
           <footer className="wizard__actions">
-            <CTAButton label="Proceed to Sign In" onClick={onProceedToSignIn} />
+            <WizardButton
+              label="Proceed to Sign In"
+              onClick={onProceedToSignIn}
+            />
           </footer>
         </div>
       </div>

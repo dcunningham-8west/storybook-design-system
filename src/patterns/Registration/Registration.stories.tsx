@@ -11,7 +11,7 @@ const meta = {
     docs: {
       description: {
         component:
-          'A four-step branching wizard composed from Wizard, RadioGroup, TextField, TextFieldGroup, CommunicationConsent, and CTAButton. Both routes proceed from details to account setup, then Success. Register user awaits onRegister or onSubscriberRegister; rejected callbacks stay on the form with a retry message. With no callback, Storybook simulates success without creating an account or sending email. Provider Success uses the entered email for verification; direct previews use the supplied sample address. Proceed to Sign In calls onProceedToSignIn with the route; the consuming app owns sign-in navigation. Password confirmation is excluded from submission and account fields are cleared after success. Provider Mobile Number is optional; Subscriber Mobile Number is required. Consent is optional, independent, and unselected. No credentials are logged in Canvas. Earlier steps preserve route-specific values. Direct panel stories skip preceding panels for preview only. Interaction scripts run only in test mode. The facility route remains unsupported.',
+          'A branching registration wizard composed from Wizard, RadioGroup, StepIndicator, TextField, TextFieldGroup, CommunicationConsent, and WizardButton. Provider and subscriber routes proceed from details to account setup, then Success. The facility route has dedicated facility details, a provider-details registration step, and provider-style success. Register user awaits onRegister or onSubscriberRegister; rejected callbacks stay on the form with a retry message. With no callback, Storybook simulates success without creating an account or sending email. Provider Success uses the entered email for verification; direct previews use the supplied sample address. Proceed to Sign In calls onProceedToSignIn with the route; the consuming app owns sign-in navigation. Password confirmation is excluded from submission and account fields are cleared after success. Provider Mobile Number is optional; Subscriber Mobile Number is required. Consent is optional, independent, and unselected. No credentials are logged in Canvas. Earlier steps preserve route-specific values. Direct panel stories skip preceding panels for preview only. Interaction scripts run only in test mode.',
       },
     },
   },
@@ -110,13 +110,78 @@ export const Step1: Story = {
     await expect(
       canvas.getByRole('radio', { name: 'I am a DeltaCare\u00ae facility.' }),
     ).toBeChecked();
-    const unsupportedNext = canvas.getByRole('button', { name: 'Next' });
-    await expect(unsupportedNext).toBeDisabled();
-    await userEvent.click(unsupportedNext);
-    await expect(args.onNext).toHaveBeenCalledTimes(2);
+    await expect(canvas.getByRole('button', { name: 'Next' })).toBeEnabled();
+    await userEvent.click(canvas.getByRole('button', { name: 'Next' }));
+    await expect(args.onNext).toHaveBeenLastCalledWith('facility');
+    await expect(
+      canvas.getByRole('heading', { name: 'Facility Registration' }),
+    ).toHaveFocus();
+    await expect(canvasElement.querySelector('.registration')).toHaveAttribute(
+      'data-registration-route',
+      'facility',
+    );
+    await expect(
+      canvas.getByRole('navigation', {
+        name: 'Facility registration progress',
+      }),
+    ).toContainElement(canvas.getByText('Enter Facility Details'));
+    const facilityFields = [
+      ['First Name', 'Alex'],
+      ['Last Name', 'Taylor'],
+      ['Taxpayer Identification Number (TIN)', '123456789'],
+      ['Facility Name', 'Boston Dental'],
+      ['Facility Number', 'A12345'],
+      ['Facility Telephone Number', '6175551234'],
+    ];
+    await expect(canvas.getAllByRole('textbox')).toHaveLength(6);
+    for (const [label] of facilityFields) {
+      await expect(canvas.getByRole('textbox', { name: label })).toBeRequired();
+    }
+    const continueButton = canvas.getByRole('button', { name: 'Continue' });
+    await expect(continueButton).toBeDisabled();
+    for (const [label, value] of facilityFields) {
+      await userEvent.type(canvas.getByRole('textbox', { name: label }), value);
+    }
+    const tin = canvas.getByRole('textbox', {
+      name: 'Taxpayer Identification Number (TIN)',
+    });
+    await userEvent.clear(tin);
+    await userEvent.type(tin, '123');
+    await expect(continueButton).toBeDisabled();
+    await userEvent.clear(tin);
+    await userEvent.type(tin, '123456789');
+    await expect(continueButton).toBeEnabled();
+    await userEvent.click(continueButton);
+    await expect(args.onNext).toHaveBeenLastCalledWith('facility', {
+      firstName: 'Alex',
+      lastName: 'Taylor',
+      tin: '123456789',
+      facilityName: 'Boston Dental',
+      facilityNumber: 'A12345',
+      facilityTelephoneNumber: '6175551234',
+    });
+    await expect(
+      canvas.getByRole('heading', { name: 'Complete Registration' }),
+    ).toHaveFocus();
+    await expect(
+      canvas.getByRole('navigation', {
+        name: 'Facility registration progress',
+      }),
+    ).toContainElement(canvas.getByText('Complete Registration'));
+    await expect(canvas.getAllByRole('textbox')).toHaveLength(9);
+    await expect(
+      canvas.getByRole('button', { name: 'Continue' }),
+    ).toBeDisabled();
+    await userEvent.click(canvas.getByRole('button', { name: 'Back' }));
+    await expect(
+      canvas.getByRole('heading', { name: 'Facility Registration' }),
+    ).toHaveFocus();
+    await userEvent.click(canvas.getByRole('button', { name: 'Cancel' }));
     await expect(
       canvas.getByRole('heading', { name: 'Registration - step 1 of 4' }),
-    ).toBeVisible();
+    ).toHaveFocus();
+    await expect(canvas.getAllByRole('radio')).toHaveLength(3);
+    await expect(args.onNext).toHaveBeenCalledTimes(4);
   }),
 };
 
@@ -331,6 +396,117 @@ export const Step2Subscriber: Story = {
       canvas.getByRole('textbox', { name: 'Member ID:' }),
     ).toHaveValue('001234567');
     await expect(canvas.getByRole('button', { name: 'Next' })).toBeEnabled();
+  }),
+};
+
+export const Step2Facility: Story = {
+  name: 'Step 2 - DeltaCare',
+  args: { initialStep: 1, initialRole: 'facility' },
+  play: testOnly(async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('heading', { name: 'Facility Registration' }),
+    ).toBeVisible();
+    await expect(canvasElement.querySelector('.registration')).toHaveAttribute(
+      'data-registration-route',
+      'facility',
+    );
+    await expect(
+      canvas.getByRole('navigation', {
+        name: 'Facility registration progress',
+      }),
+    ).toContainElement(canvas.getByText('Enter Facility Details'));
+    await expect(canvas.getAllByRole('textbox')).toHaveLength(6);
+    await expect(
+      canvas.getByRole('button', { name: 'Continue' }),
+    ).toBeDisabled();
+  }),
+};
+
+export const Step3Facility: Story = {
+  name: 'Step 3 - DeltaCare',
+  args: { initialStep: 2, initialRole: 'facility' },
+  play: testOnly(async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('heading', { name: 'Complete Registration' }),
+    ).toHaveFocus();
+    await expect(
+      canvas.getByRole('navigation', {
+        name: 'Facility registration progress',
+      }),
+    ).toContainElement(canvas.getByText('Complete Registration'));
+    await expect(canvas.getAllByRole('textbox')).toHaveLength(9);
+    const continueButton = canvas.getByRole('button', { name: 'Continue' });
+    await expect(continueButton).toBeDisabled();
+    const values = [
+      ['First Name:', 'Alex'],
+      ['Last Name:', 'Taylor'],
+      ['Business Tax ID:', '001234567'],
+      ['Business City:', 'Boston'],
+      ['Business Postal Code:', '02108'],
+      ['Dentist First Name:', 'Jordan'],
+      ['Dentist Last Name:', 'Lee'],
+      ['License ID:', 'D12345'],
+      ['License State:', 'MA'],
+    ];
+    for (const [label, value] of values) {
+      await userEvent.type(canvas.getByRole('textbox', { name: label }), value);
+    }
+    await expect(continueButton).toBeEnabled();
+    await userEvent.click(continueButton);
+    await expect(args.onNext).toHaveBeenLastCalledWith('facility', {
+      firstName: 'Alex',
+      lastName: 'Taylor',
+      businessTaxId: '001234567',
+      businessCity: 'Boston',
+      businessPostalCode: '02108',
+      dentistFirstName: 'Jordan',
+      dentistLastName: 'Lee',
+      licenseId: 'D12345',
+      licenseState: 'MA',
+    });
+    await expect(
+      canvas.getByRole('heading', { name: 'Success' }),
+    ).toHaveFocus();
+    await expect(
+      canvas.getByText(/code has been sent to tnussbaumer@deltadental.com/),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole('navigation', {
+        name: 'Facility registration progress',
+      }),
+    ).toContainElement(canvas.getByText('Success'));
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Proceed to Sign In' }),
+    );
+    await expect(args.onProceedToSignIn).toHaveBeenLastCalledWith('facility');
+  }),
+};
+
+export const Step4Facility: Story = {
+  name: 'Step 4 - DeltaCare',
+  args: { initialStep: 3, initialRole: 'facility' },
+  play: testOnly(async ({ canvasElement, args }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.getByRole('heading', { name: 'Success' }),
+    ).toHaveFocus();
+    await expect(
+      canvas.queryByRole('heading', { name: 'Registration - step 4 of 4' }),
+    ).not.toBeInTheDocument();
+    await expect(
+      canvas.getByText(/code has been sent to tnussbaumer@deltadental.com/),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole('navigation', {
+        name: 'Facility registration progress',
+      }),
+    ).toContainElement(canvas.getByText('Success'));
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Proceed to Sign In' }),
+    );
+    await expect(args.onProceedToSignIn).toHaveBeenLastCalledWith('facility');
   }),
 };
 

@@ -18,6 +18,99 @@
   box-shadow: none;
 }
 
+.registration__facility-panel {
+  max-width: 960px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1607843137);
+}
+
+.registration__facility-content {
+  padding: 32px;
+  font-family: 'Gotham', 'Nunito Sans', 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #000;
+}
+
+.registration__facility-content h2 {
+  margin: 0 0 20px;
+  color: #1d8928;
+  font-family: 'Gotham', 'Nunito Sans', 'Helvetica Neue', sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+
+.registration__facility-intro {
+  margin: 0 0 24px;
+}
+
+.registration__facility-form {
+  display: grid;
+  gap: 32px;
+}
+
+.registration__facility-form .text-field {
+  font-family: inherit;
+  color: inherit;
+}
+
+.registration__facility-form .text-field__label {
+  display: flex;
+  font-weight: 400;
+  text-align: left;
+}
+
+.registration__facility-form .text-field__required {
+  order: -1;
+  margin-left: 0;
+  margin-right: 4px;
+}
+
+.registration__facility-form .text-field__input {
+  font-family: inherit;
+  font-weight: 300;
+}
+
+.registration__facility-form .wizard__actions {
+  margin-top: 0;
+  padding: 0;
+  border-top: 0;
+}
+
+.registration__facility-panel > .wizard {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.registration__facility-panel > .wizard .wizard__body {
+  min-height: 0;
+  padding: 32px;
+}
+
+.registration__facility-panel > .wizard .wizard__body h2 {
+  margin: 0 0 20px;
+  font-size: 32px;
+  text-align: left;
+}
+
+.registration__facility-panel > .wizard .wizard__content {
+  margin-top: 24px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 .registration .wizard__content {
   padding: 32px;
   background: white;
@@ -29,7 +122,7 @@
   margin-top: 32px;
   padding: 0;
   border-top: 0;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -142,11 +235,19 @@
 }
 
 .registration .registration__success .wizard__actions {
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 @media (max-width: 600px) {
   .registration {
     padding: 16px;
+  }
+
+  .registration__facility-content {
+    padding: 24px 20px;
+  }
+
+  .registration__facility-panel > .wizard .wizard__body {
+    padding: 24px 20px;
   }
 }
